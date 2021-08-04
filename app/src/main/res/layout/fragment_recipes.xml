@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightGray"
-    tools:context=".RecipesFragment">
+    tools:context=".ui.fragments.recipes.RecipesFragment">
 
-    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-        android:id="@+id/recyclerview"
+    <com.todkars.shimmer.ShimmerRecyclerView
+        android:id="@+id/shimmer_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -22,6 +22,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -43,10 +45,10 @@
         android:alpha="0.5"
         android:src="@drawable/ic_sad"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerview"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerview"
-        app:layout_constraintStart_toStartOf="@+id/recyclerview"
-        app:layout_constraintTop_toTopOf="@+id/recyclerview"
+        app:layout_constraintBottom_toBottomOf="@+id/shimmer_recycler_view"
+        app:layout_constraintEnd_toEndOf="@+id/shimmer_recycler_view"
+        app:layout_constraintStart_toStartOf="@+id/shimmer_recycler_view"
+        app:layout_constraintTop_toTopOf="@+id/shimmer_recycler_view"
         app:layout_constraintVertical_bias="0.36" />
 
     <TextView
