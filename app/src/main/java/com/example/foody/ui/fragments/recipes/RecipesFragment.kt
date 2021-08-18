@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foody.viewmodels.MainViewModel
 import com.example.foody.R
@@ -26,6 +27,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
     //https://api.spoonacular.com/recipes/complexSearch?number=1&apiKey=def03f97eb664436ac3a62c793e582a7&type=drink&diet=vegan&addRecipeInformation=true&fillingredients=true
+
+    private val args by navArgs<RecipesFragmentArgs>()
 
     private var _binding: FragmentRecipesBinding? = null
     private val binding get() = _binding!!
@@ -72,7 +75,7 @@ class RecipesFragment : Fragment() {
     private fun readDatabase() {
         lifecycleScope.launch {
             mainViewModel.readRecipes.observeOnce(viewLifecycleOwner, { database ->
-            if(database.isNotEmpty()){
+            if(database.isNotEmpty() && !args.backFromBottomSheet){
                 Log.d("RecipesFragment", "readDatabase called!")
                 mAdapter.setData(database[0].foodRecipe)
                 hideShimmerEffect()
