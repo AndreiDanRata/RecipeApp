@@ -9,12 +9,13 @@ class Constants {
 
         //API Query Keys
 
-        const val QUERRY_NUMBER = "number"
-        const val QUERRY_API_KEY = "apiKey"
-        const val QUERRY_TYPE = "type"
-        const val QUERRY_DIET = "diet"
-        const val QUERRY_ADD_RECIPE_INFORMATION = "addRecipeInformation"
-        const val QUERRY_FILL_INGREDIENTS = "fillIngredients"
+        const val QUERY_SEARCH = "query"
+        const val QUERY_NUMBER = "number"
+        const val QUERY_API_KEY = "apiKey"
+        const val QUERY_TYPE = "type"
+        const val QUERY_DIET = "diet"
+        const val QUERY_ADD_RECIPE_INFORMATION = "addRecipeInformation"
+        const val QUERY_FILL_INGREDIENTS = "fillIngredients"
 
         //ROOM Database
         const val DATABASE_NAME = "recipes_database"
