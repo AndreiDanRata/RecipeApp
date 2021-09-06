@@ -38,6 +38,7 @@
     <string name="healthy">Healthy</string>
     <string name="diary_free">Diary Free</string>
     <string name="save_to_favorites">Save to Favorites</string>
+    <string name="no_favorite_recipes">No Favorite Recipes</string>
 
 
 </resources>
