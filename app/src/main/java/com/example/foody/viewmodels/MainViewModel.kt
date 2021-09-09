@@ -7,9 +7,11 @@ import android.net.NetworkCapabilities
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.foody.data.database.entities.FavoritesEntity
+import com.example.foody.data.database.entities.FoodTriviaEntity
 import com.example.foody.data.database.entities.RecipesEntity
 import com.example.foody.data.network.Repository
 import com.example.foody.models.FoodRecipe
+import com.example.foody.models.FoodTrivia
 import com.example.foody.util.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +28,7 @@ class MainViewModel @ViewModelInject constructor(
 
     val readRecipes: LiveData<List<RecipesEntity>> = repository.local.readRecipes().asLiveData()
     val readFavRecipes: LiveData<List<FavoritesEntity>> = repository.local.readFavRecipes().asLiveData()
+    val readFoodTrivia: LiveData<List<FoodTriviaEntity>> = repository.local.readFoodTrivia().asLiveData()
 
     private fun insertRecipes(recipesEntity: RecipesEntity) =
         viewModelScope.launch(Dispatchers.IO) {
@@ -37,6 +40,11 @@ class MainViewModel @ViewModelInject constructor(
             repository.local.insertFavRecipes(favoritesEntity)
         }
     }
+
+    fun insertFoodTrivia(foodTriviaEntity: FoodTriviaEntity) =
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.insertFoodTrivia(foodTriviaEntity)
+        }
 
     fun deleteFavRecipe(favoritesEntity: FavoritesEntity) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -53,6 +61,7 @@ class MainViewModel @ViewModelInject constructor(
     /** RETROFIT  aka Data straight from the api*/
     var recipesResponse: MutableLiveData<NetworkResult<FoodRecipe>> = MutableLiveData()
     var searchedRecipeResponse: MutableLiveData<NetworkResult<FoodRecipe>> = MutableLiveData()
+    var foodTriviaResponse: MutableLiveData<NetworkResult<FoodTrivia>> = MutableLiveData()
 
     fun getRecipes(queries: Map<String, String>) = viewModelScope.launch {
         getRecipesSafeCall(queries)
@@ -60,6 +69,10 @@ class MainViewModel @ViewModelInject constructor(
 
     fun searchRecipes(searchQuery: Map<String,String>) = viewModelScope.launch {
         searchRecipesSafeCall(searchQuery)
+    }
+
+    fun getFoodTrivia(apiKey: String) = viewModelScope.launch {
+        getFoodTriviaSafeCall(apiKey)
     }
 
 
@@ -97,9 +110,31 @@ class MainViewModel @ViewModelInject constructor(
         }
     }
 
+    private suspend fun getFoodTriviaSafeCall(apiKey: String) {
+        foodTriviaResponse.value = NetworkResult.Loading()
+        if(hasInternetConenction()) {
+            try {
+                val response = repository.remote.getFoodTrivia(apiKey)
+                foodTriviaResponse.value = handleFoodTriviaResponse(response)
+
+                val foodTrivia = foodTriviaResponse.value!!.data
+                if(foodTrivia != null) offlineCacheFoodTrivia(foodTrivia)
+            } catch (e: Exception) {
+                foodTriviaResponse.value = NetworkResult.Error("Recipes not found.")
+            }
+        } else {
+            foodTriviaResponse.value = NetworkResult.Error("No Internet Connection.")
+        }
+    }
+
     private fun offlineCacheRecipes(foodRecipe: FoodRecipe) {
         val recipesEntity = RecipesEntity(foodRecipe)
         insertRecipes(recipesEntity)
+    }
+
+    private fun offlineCacheFoodTrivia(foodTrivia: FoodTrivia) {
+        val foodTriviaEntity = FoodTriviaEntity(foodTrivia)
+        insertFoodTrivia(foodTriviaEntity)
     }
 
     private fun handleFoodRecipesResponse(response: Response<FoodRecipe>): NetworkResult<FoodRecipe>? {
@@ -119,6 +154,25 @@ class MainViewModel @ViewModelInject constructor(
             }
             else -> {
                 return NetworkResult.Error(response.message())
+            }
+        }
+    }
+
+
+    private fun handleFoodTriviaResponse(response: Response<FoodTrivia>): NetworkResult<FoodTrivia>? {
+        return when {
+            response.message().toString().contains("timeout") -> {
+                NetworkResult.Error("Timeout")
+            }
+            response.code() == 402 -> {
+                NetworkResult.Error("API Key Limited.")
+            }
+            response.isSuccessful -> {
+                val foodTrivia =response.body()
+                NetworkResult.Success(foodTrivia!!)
+            }
+            else -> {
+                NetworkResult.Error(response.message())
             }
         }
     }

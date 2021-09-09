@@ -4,11 +4,12 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.foody.data.database.entities.FavoritesEntity
+import com.example.foody.data.database.entities.FoodTriviaEntity
 import com.example.foody.data.database.entities.RecipesEntity
 
 
 @Database(
-    entities = [RecipesEntity::class, FavoritesEntity::class],
+    entities = [RecipesEntity::class, FavoritesEntity::class, FoodTriviaEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -17,4 +18,5 @@ abstract class RecipesDatabase : RoomDatabase() {
 
     abstract fun recipesDao(): RecipesDao
 }
+
 
