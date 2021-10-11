@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/foodJokeFragment"
-        android:name="com.example.foody.ui.fragments.foodtrivia.FoodJokeFragment"
+        android:name="com.example.foody.ui.fragments.foodtrivia.FoodTriviaFragment"
         android:label="@string/food_joke_fragment"
         tools:layout="@layout/fragment_food_trivia" />
     <fragment
