@@ -8,6 +8,9 @@ Application built with the purpose of learning how to retrieve data from an API 
 TECHNOLOGIES USED
 
 Adobe XD
+
 Android Studio + Kotlin
+
 Spoonaular public API
+
 Dagger - Hilt library
