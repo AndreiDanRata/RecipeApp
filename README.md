@@ -1,20 +1,18 @@
 # RecipeApp
-Android application that displays uncommon and cool food recipes ideas.
-
-CHALLENGE:
-
-
-Application built with the purpose of learning how to retrieve data from an API and use dependecy injections.
-
-
+Android application that displays uncommon and cool food recipe ideas that can be tailored to various dietary requirements.
 
 TECHNOLOGIES USED:
 
+Android Studio 
 
-Adobe XD
+Kotlin
 
-Android Studio + Kotlin
+Android Views(old style: activities, fragments, XML based views)
 
 Spoonaular public API
 
-Dagger - Hilt library
+Dagger - Hilt Dependency Injection library
+
+Room DB 
+
+Retrofit
